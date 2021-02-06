@@ -1,8 +1,9 @@
 DIR=~/.config/systemd/user/
 
 JACK=sfx-start-jack.service
+SERVER=sfx-start-server.service
 
-SERVICES=$(JACK)
+SERVICES=$(JACK) $(SERVER)
 
 all: install
 

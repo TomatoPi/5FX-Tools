@@ -1,0 +1,16 @@
+
+[Unit]
+Description=5FX_SERVER
+Wants=sfx-start-jack.service
+After=sfx-start-jack.service
+
+[Service]
+
+ExecStartPre=systemctl --user is-active sfx-start-jack.service
+ExecStart=/usr/local/bin/5FX-Server --session Test --no-cli
+
+StartLimitInterval=3
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

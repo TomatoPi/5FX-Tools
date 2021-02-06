@@ -11,6 +11,7 @@ LimitMEMLOCK=infinity
 ExecStartPre=/usr/bin/test -d /proc/asound/U192k/
 ExecStart=/usr/bin/jackd -R -P90 -d alsa -X raw -dhw:U192k,0 -r48000 -p128 -n3
 
+StartLimitInterval=3
 Restart=on-failure
 
 [Install]
