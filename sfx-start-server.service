@@ -9,7 +9,7 @@ After=sfx-start-jack.service
 ExecStartPre=systemctl --user is-active sfx-start-jack.service
 ExecStart=/usr/local/bin/5FX-Server --session Test --no-cli
 
-StartLimitInterval=3
+StartLimitInterval=5
 Restart=on-failure
 
 [Install]
