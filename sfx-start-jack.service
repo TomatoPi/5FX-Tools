@@ -4,6 +4,7 @@ Description=JACK_SERVICE
 After=sound.target
 
 [Service]
+Type=oneshot
 
 LimitRTPRIO=infinity
 LimitMEMLOCK=infinity
@@ -11,8 +12,9 @@ LimitMEMLOCK=infinity
 ExecStartPre=/usr/bin/test -d /proc/asound/U192k/
 ExecStart=/usr/bin/jackd -R -P90 -d alsa -X raw -dhw:U192k,0 -r48000 -p128 -n3
 
-StartLimitInterval=5
 Restart=on-failure
+RestartSec=3
+StartLimitInterval=30
 
 [Install]
 WantedBy=default.target

@@ -13,4 +13,5 @@ install:
 	systemctl --user enable $(SERVICES)
 
 uninstall:
+	rm $(addprefix $(DIR), $(SERVICES))
 	systemctl --user disable $(SERVICES)
