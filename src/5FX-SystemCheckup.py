@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import os
 import sys
 import re
@@ -45,7 +47,7 @@ def check_devices(devices) :
     # print("""Ok""")
     return result
 
-def check_system_realtimeness(devices, card) :
+def check_system_realtime(devices, card) :
 
     desc = devices[card]
     
@@ -107,8 +109,11 @@ def check_system_realtimeness(devices, card) :
         raise FailedTest(f"{failed_tests}")
 
 if __name__ == '__main__' :
-    DEVICES = ["D5FXInterface", "O88", "S49"]
+    DEVICES = sys.argv[1:]
+    if 0 == len(DEVICES) :
+        DEVICES = ["D5FXInterface", "O88", "S49"]
+
     devices = check_devices(DEVICES)
-    check_system_realtimeness(devices, DEVICES[0])
+    check_system_realtime(devices, DEVICES[0])
 
 

@@ -1,6 +1,12 @@
 # 5FX-Autostart
 
-Systemd units and scripts for 5FX-Environement autostarting auto starting
+Systemd units and scripts for 5FX-Environement auto starting.
 
-## Installation
-**make instal** or **make uninstall**
+## Programs
+
+### 5FX-SystemCheckup
+
+Perform a sanity check of current system configuration for realtime processing.
+
+### 5FX-Autostart
+
