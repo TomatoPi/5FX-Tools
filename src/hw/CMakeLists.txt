@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.20.0)
 
-include(FindPythonInterp)
-
 add_executable(5FX-IO 5FX-IO.cpp)
 # add_executable(Test-5FX-IO 5FX-IO.cpp tests/Test-5FX-IO.cpp)
 # target_link_libraries(Test-5FX-IO PRIVATE nlohmann_json::nlohmann_json)

@@ -13,6 +13,8 @@ class MissingDevice (Exception) :
     pass
 
 class FailedTest (Exception) :
+    # def __init__(self, fails) :
+    #     self.fails = fails
     pass
 
 def run(command) :
@@ -33,7 +35,7 @@ def check_devices(devices) :
     # print(matches)
 
     result = {item[1] : (item[0], item[2:]) for item in matches}
-    print(result)
+    # print(result)
 
     missing_devs = []
 
@@ -106,7 +108,10 @@ def check_system_realtime(devices, card) :
     
     result = {item[0] : '\n'.join(item[1:]) for item in failed_tests}
     if 0 < len(failed_tests) :
-        raise FailedTest(f"{failed_tests}")
+        raise FailedTest(f"{output}")
+
+    return result
+    
 
 if __name__ == '__main__' :
     DEVICES = sys.argv[1:]
@@ -114,6 +119,17 @@ if __name__ == '__main__' :
         DEVICES = ["D5FXInterface", "O88", "S49"]
 
     devices = check_devices(DEVICES)
-    check_system_realtime(devices, DEVICES[0])
+    output = check_system_realtime(devices, DEVICES[0])
+
+    # for _ in range(3) :
+    #     try :
+    #     except FailedTest as failure :
+    #         result = failure.fails
+    #         for item in result :
+    #             reason = item[-2]
+
+    #             regex = re.compile(r"make ([\/\w\d]+) readable by the '(\w+)' group")
+    #             matches = re.match(reason)
+    #             print(matches)
 
 
