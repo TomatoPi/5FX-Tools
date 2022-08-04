@@ -9,7 +9,7 @@ class FailedCommand (Exception) :
 
 def set_port_property(port, prop, value, type) :
 
-    proc = sp.run(['jack_property', '-p', '-s', port, prop, value, type], stdout=sp.PIPE)
+    proc = sp.run(['jack_property', '-p', '-s', port, prop, value], stdout=sp.PIPE)
     if proc.returncode != 0 :
         raise FailedCommand(proc)
 
@@ -87,7 +87,7 @@ def configure_pretty_names(ip, io) :
     for idx, name in enumerate(names) :
         
         port = f"{portbase}{idx+1}"
-        sp.run(f'jack_property -p -d {port}'.split(' '))
+        sp.run(f'jack_property -p -d {port} http://jackaudio.org/metadata/pretty-name'.split(' '))
 
         if 0 == len(name) :
             name = f"_{idx+1}"
