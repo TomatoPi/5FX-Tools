@@ -27,6 +27,11 @@ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 """
 
+import re
+import os
+
+from requests import session
+import liblo
 import subprocess as sp
 
 class FailedCommand (Exception) :
@@ -47,6 +52,11 @@ from nsmclient import NSMClient     # will raise an error and exit if this examp
 # General
 ########################################################################
 niceTitle = "5FX-Session"            # This is the name of your program. This will display in NSM and can be used in your save file
+nested_session_name = ".session"
+
+NSM_NESTED_SERVER = None
+NSM_NESTED_SERVER_URL = None
+GUI_PROC = None
 
 ########################################################################
 # Prepare the NSM Client
@@ -64,11 +74,20 @@ niceTitle = "5FX-Session"            # This is the name of your program. This wi
 def saveCallback(ourPath, sessionName, ourClientNameUnderNSM):
     # Put your code to save your config file in here
     print("saveCallback");
+    liblo.send(NSM_NESTED_SERVER, '/nsm/server/save')
 
 
 def openCallback(ourPath, sessionName, ourClientNameUnderNSM):
     # Put your code to open your config file in here
     print("openCallback");
+
+    nested_session_path = os.path.join(ourPath, nested_session_name)
+    if not os.path.exists(nested_session_path) :
+        path = '/nsm/server/new'
+    else :
+        path = '/nsm/server/open'
+
+    liblo.send(NSM_NESTED_SERVER, path, ('s', nested_session_name))
 
 
 def exitProgram(ourPath, sessionName, ourClientNameUnderNSM):
@@ -77,18 +96,32 @@ def exitProgram(ourPath, sessionName, ourClientNameUnderNSM):
     If not nsmclient will just kill us no matter what
     """
     print("exitProgram");
+    liblo.send(NSM_NESTED_SERVER, '/nsm/server/abort')
     # Exit is done by NSM kill.
 
 
 def showGUICallback():
     # Put your code that shows your GUI in here
     print("showGUICallback");
+
+    if GUI_PROC is None :
+        GUI_PROC = sp.Popen(['non-session-manager', '--nsm-url', NSM_NESTED_SERVER_URL])
+    else :
+        raise RuntimeError("Invalid State : GUI already opened")
+
     nsmClient.announceGuiVisibility(isVisible=True)  # Inform NSM that the GUI is now visible. Put this at the end.
 
 
 def hideGUICallback():
     # Put your code that hides your GUI in here
     print("hideGUICallback");
+
+    if GUI_PROC is not None :
+        GUI_PROC.terminate()
+    else :
+        raise RuntimeError("Invalid State : GUI already closed")
+    
+    GUI_PROC = None
     nsmClient.announceGuiVisibility(isVisible=False)  # Inform NSM that the GUI is now hidden. Put this at the end.
 
 
@@ -110,14 +143,21 @@ nsmClient = NSMClient(prettyName = niceTitle,
 ########################################################################
 jackClientName = nsmClient.ourClientNameUnderNSM
 
-output = run(f"nsmd --session-root {nsmClient.outPath} --detach")
+output = run(f"nsmd --session-root {nsmClient.ourPath} --detach")
 print(output)
+
+regex = re.compile(r'NSM_NESTED_SERVER_URL=([\w\d\-\/:\.]+)')
+matches = regex.search(output)
+print(matches)
+
+NSM_NESTED_SERVER_URL = matches.group(1)
+NSM_NESTED_SERVER = liblo.Address(NSM_NESTED_SERVER_URL)
 
 ########################################################################
 # Start main program loop.
 ########################################################################
 
-# showGUICallback()  # If you want your GUI to be shown by default, uncomment this line
+showGUICallback()  # If you want your GUI to be shown by default, uncomment this line
 print("Entering main loop")
 
 while True:
