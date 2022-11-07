@@ -1,0 +1,60 @@
+{
+  "name" : "Akai APC40",
+  "meta" : {
+    "control" : ["message-type", "display-mode", "base-id", "id-range", "channel-range"]
+  },
+  "displays" : {
+    "none"      : [],
+    "continuous": "0-127",
+    "pad"     : ["Off", "Green", "Green-Blink", "Red", "Red-Blink", "Yellow", "Yellow-Blink"],
+    "toggle"  : ["Off", "On"],
+    "launch"  : ["Off", "On", "Blink"],
+    "led-ring": ["Off", "Single", "Volume", "Pan"]
+  },
+  "controls" : {
+
+    "Record-Arm"  : ["note", "toggle", "0x30", "1", "8"],
+    "Solo"        : ["note", "toggle", "0x31", "1", "8"],
+    "Activator"   : ["note", "toggle", "0x32", "1", "8"],
+    "Select-Track": ["note", "toggle", "0x33", "1", "8"],
+
+    "Clip-Stop"   : ["note", "launch", "0x34", "1", "8"],
+    "Clip-Launch" : ["note", "pad",    "0x35", "5", "8"],
+
+    "Generic-Button" : ["note", "toggle", "0x3A", "8", "1"],
+
+    "Select-Master" : ["note", "toggle", "0x50", "1", "1"],
+    "Stop-All-Clips": ["note", "none", "0x51", "1", "1"],
+    "Scene-Launch"  : ["note", "launch", "0x52", "5", "1"],
+
+    "Pan"     : ["note", "toggle", "0x57", "1", "1"],
+    "Send-A"  : ["note", "toggle", "0x58", "1", "1"],
+    "Send-B"  : ["note", "toggle", "0x59", "1", "1"],
+    "Send-C"  : ["note", "toggle", "0x5A", "1", "1"],
+
+    "Play"    : ["note", "none", "0x5B", "1", "1"],
+    "Stop"    : ["note", "none", "0x5C", "1", "1"],
+    "Record"  : ["note", "none", "0x5D", "1", "1"],
+
+    "Up"    : ["note", "none", "0x5E", "1", "1"],
+    "Down"  : ["note", "none", "0x5F", "1", "1"],
+    "Right" : ["note", "none", "0x60", "1", "1"],
+    "Left"  : ["note", "none", "0x61", "1", "1"],
+
+    "Shift"       : ["note", "none", "0x62", "1", "1"],
+    "Tap-Tempo"   : ["note", "none", "0x63", "1", "1"],
+    "Nudge-Plus"  : ["note", "none", "0x64", "1", "1"],
+    "Nudge-Minus" : ["note", "none", "0x65", "1", "1"],
+
+    "Master"      : ["cc", "none", "0x0E", "1", "1"],
+    "Crossfader"  : ["cc", "none", "0x0F", "1", "1"],
+
+    "Device-Knob"       : ["cc", "continuous", "0x10", "8", "1"],
+    "Device-Knob-Mode"  : ["cc", "led-ring", "0x18", "8", "1"],
+
+    "Track-Knob"       : ["cc", "continuous", "0x30", "8", "1"],
+    "Track-Knob-Mode"  : ["cc", "led-ring", "0x38", "8", "1"],
+
+    "Cue" : ["cc-relative", "none", "0x2F", "1", "1"]
+  }
+}
